@@ -1,0 +1,72 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SENSOR_PIN A0
+#define THRESHOLD 540
+
+Adafruit_SSD1306 display(128, 64, &Wire);
+
+int prevX = 0;
+int prevY = 60;
+int currX = 0;
+int sensorVal;
+int mappedVal;
+long startTime = 0;
+long lastTime = 0;
+int beatCount = 0;
+
+void setup() {
+  Serial.begin(9600);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  delay(1000);
+  display.clearDisplay();
+}
+
+void loop() {
+  sensorVal = analogRead(SENSOR_PIN);
+  Serial.println(sensorVal);
+  mappedVal = map(sensorVal, 0, 1024, 0, 45);
+
+  int currY = 60 - mappedVal;
+
+  if (currX > 128) {
+    currX = prevX = 0;
+    prevY = 60;
+    display.clearDisplay();
+  }
+
+  display.drawLine(prevX, prevY, currX, currY, WHITE);
+  
+  prevX = currX++;
+  prevY = currY;
+
+  calculateBPM();
+
+  display.setCursor(0, 0);
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.print("BPM :");
+  
+}
+
+void calculateBPM() {
+
+  if (sensorVal > THRESHOLD) {
+    startTime = millis() - lastTime;
+    beatCount++;
+
+    if (startTime / 1000 >= 60) {
+      lastTime = millis();
+      Serial.println(beatCount);
+      display.setCursor(60, 0);
+      display.setTextSize(2);
+      display.setTextColor(SSD1306_WHITE);
+      display.print(beatCount);
+      display.print("   ");
+      beatCount = 0;
+    }
+    
+    display.display();
+    
+}
