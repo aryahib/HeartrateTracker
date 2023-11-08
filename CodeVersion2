@@ -1,0 +1,81 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SENSOR_PIN A0
+#define THRESHOLD 540
+
+Adafruit_SSD1306 display(128, 64, &Wire);
+
+int prevX = 0;
+int prevY = 60;
+int currX = 0;
+int sensorVal;
+int mappedVal;
+long startTime = 0;
+long lastTime = 0;
+int beatCount = 0;
+
+void setup() {
+  Serial.begin(9600);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  delay(1000);
+  display.clearDisplay();
+}
+
+void loop() {
+  // Read sensor data (e.g., PPG signal)
+  sensorVal = analogRead(SENSOR_PIN);
+  Serial.println(sensorVal);
+  
+  // Process the PPG signal
+  mappedVal = map(sensorVal, 0, 1024, 0, 45);
+
+  int currY = 60 - mappedVal;
+
+  if (currX > 128) {
+    currX = prevX = 0;
+    prevY = 60;
+    display.clearDisplay();
+  }
+
+  // Display PPG signal on the screen
+  display.drawLine(prevX, prevY, currX, currY, WHITE);
+  
+  prevX = currX++;
+  prevY = currY;
+
+  // Calculate heart rate using mathematical principle
+  calculateBPM();
+
+  // Display heart rate information to the user
+  display.setCursor(0, 0);
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE);
+  display.print("BPM: ");
+  // Additional health insights (not shown in the original code) can also be displayed here.
+
+  // Update the OLED display
+  display.display();
+}
+
+void calculateBPM() {
+  // Determine heart rate using mathematical principle (peak-to-peak interval method)
+  if (sensorVal > THRESHOLD) {
+    startTime = millis() - lastTime;
+    beatCount++;
+
+    if (startTime / 1000 >= 60) {
+      lastTime = millis();
+      Serial.println(beatCount);
+      // Display heart rate on the OLED screen
+      display.setCursor(60, 0);
+      display.setTextSize(2);
+      display.setTextColor(SSD1306_WHITE);
+      display.print(beatCount);
+      display.print("   ");
+      beatCount = 0;
+    }
+  }
+}
