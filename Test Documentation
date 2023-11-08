@@ -1,0 +1,83 @@
+Heart Rate Monitor Testing Document
+
+Introduction
+This testing document outlines the evaluation of a simple heart rate monitor. The monitor is designed to track heart rate using the Photoplethysmography (PPG) principle, employ signal processing and filtering techniques, and present data through effective data visualization. The device is being initially developed for use with Arduino, with plans to translate the code for the STM32F401RE microcontroller for the final product.
+
+Test 1: Basic Functionality Test (Test finished on 11/03/2023)
+Objective: To test the basic code and functionality of the heart rate monitor circuit.
+
+Scenario:
+- The heart rate monitor is set up with the STM and necessary components.
+- The monitor is powered on, and the sensor is placed on the user's finger.
+- The sensor readings are observed on the serial monitor.
+- The monitor is set to display the heart rate on the OLED screen.
+
+Test Result:
+- The circuit and code successfully capture sensor data.
+- The heart rate is displayed on the OLED screen.
+- Data appears to be raw without any advanced filtering or signal processing.
+
+Improvement: The basic functionality is confirmed, and it's time to proceed to the next tests, where we will focus on incorporating PPG, signal processing, and data visualization principles into a custom library.
+
+Test 2: PPG Implementation Test (Test finished on 11/05/2023)
+Objective: To incorporate the Photoplethysmography (PPG) principle into the custom library for the heart rate monitor.
+
+Scenario:
+- Modify the code to incorporate PPG for heart rate measurement.
+- Implement the peak-to-peak interval method to calculate heart rate (BPM).
+- Ensure that heart rate data is still displayed on the OLED screen.
+
+Test Result:
+- PPG is successfully implemented in the custom library.
+- Heart rate calculations are now based on PPG data.
+- Heart rate data is displayed on the OLED screen as before.
+
+Improvement: PPG is integrated into the code, but more advanced signal processing is needed to improve accuracy and reliability.
+
+Test 3: Signal Processing and Filtering (Test finished on 11/07/2023)
+Objective: To apply signal processing and filtering techniques to enhance the heart rate monitoring accuracy.
+
+Scenario:
+- Implement a low-pass filter to reduce high-frequency noise and motion artifacts.
+- Add adaptive filtering techniques to dynamically adjust filter coefficients based on noise characteristics.
+- Observe the effect on heart rate data and its accuracy.
+
+Test Result:
+- Signal processing and filtering are successfully applied.
+- Heart rate data shows reduced noise and artifacts.
+- The heart rate monitor provides more reliable measurements.
+
+Improvement: Signal processing improves accuracy, but data visualization needs enhancement to make the heart rate information more user-friendly.
+
+Test 4: Data Visualization Enhancement (Work in Progress)
+Objective: To create effective data visualization for heart rate data.
+
+Scenario:
+- Implement clear and precise data visualization principles.
+- Create a live graph that displays heart rate trends in real-time.
+- Ensure that the graph is easy to read and understand.
+
+Test Result:
+- Data visualization is effectively applied with a live graph.
+- Heart rate trends are presented clearly.
+- The user can easily understand the graph.
+
+Improvement: While the device now provides clear data visualization, further testing is needed to address the needs of the intended user group, seniors. The user interface may require adjustments to meet their specific needs.
+
+Test 5: User Interface Adaptation (Work in Progress)
+Objective: To adapt the user interface for seniors, keeping in mind their specific needs and preferences.
+
+Scenario:
+- Gather feedback from senior users regarding the user interface.
+- Make necessary adjustments to improve usability for seniors.
+- Implement changes in the device's interface, font size, or other elements.
+
+Test Result:
+- Feedback from senior users is collected.
+- Initial adjustments are made in response to the feedback.
+- The heart rate monitor's user interface is evolving, but further testing and refinements are required.
+
+Remaining Work: The project is a work in progress, and further testing is needed to ensure the heart rate monitor is tailored to the needs of senior users. Additional iterations are required to finalize the product.
+
+Conclusion
+The heart rate monitor has successfully passed the initial tests for basic functionality, PPG integration, signal processing, and data visualization. However, further testing and improvements are required, particularly in adapting the user interface for seniors. The project is a work in progress, and more iterations will be conducted to ensure the monitor meets the needs of the intended user group.
